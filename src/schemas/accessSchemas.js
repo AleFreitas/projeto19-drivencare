@@ -7,4 +7,9 @@ const signUpPatientSchema = Joi.object({
   cpf: Joi.string().required()
 });
 
-export { signUpPatientSchema };
+const signInPatientSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().required()
+})
+
+export { signUpPatientSchema, signInPatientSchema };
