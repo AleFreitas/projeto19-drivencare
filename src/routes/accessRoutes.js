@@ -1,12 +1,10 @@
 import { Router } from "express";
+import { signUpPatient } from "../controllers/accessControllers.js";
 import { validateSchema } from "../middlewares/validateSchema.js";
+import { signUpPatientSchema } from "../schemas/accessSchemas.js";
 const accessRouter = Router()
 
  
-accessRouter.post("/sign-in-patient")
-accessRouter.post("/sign-up-patient") 
-accessRouter.post("/sign-in-doctor")
-accessRouter.post("/sign-up-doctor")
-accessRouter.delete("/logout/:token")
+accessRouter.post("/sign-up-patient", validateSchema(signUpPatientSchema), signUpPatient)
 
 export default accessRouter
