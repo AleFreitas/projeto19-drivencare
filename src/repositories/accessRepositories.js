@@ -24,6 +24,14 @@ async function findPatientByEmail(email){
     return result;
 }
 
+async function findDoctorByEmail(email){
+    const result = await pool.query(`
+        SELECT * FROM doctors
+        WHERE email=$1;         
+    `, [email]);
+    return result;
+}
+
 async function createPatient(name, email, cpf, password) {
     const result = await pool.query(`
         insert into patients (name,email,cpf,password)
@@ -40,4 +48,4 @@ async function createDoctor(name, email, crm, password, cityId, specialtyId) {
      return result.rows[0];
 }
 
-export default {createPatient, createDoctor, findPatient, findDoctor,findPatientByEmail}
+export default {createPatient, createDoctor, findPatient, findDoctor,findPatientByEmail, findDoctorByEmail}

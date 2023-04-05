@@ -37,4 +37,14 @@ async function signInPatient(req,res,next){
   }
 }
 
-export default { signUpPatient ,signInPatient, signUpDoctor};
+async function signInDoctor(req,res,next){
+  try{
+    const {email, password} = req.body;
+    const token = await accessService.loginDoctor(email, password);
+    return res.status(200).json(token)
+  }catch(err){
+    return next(err)
+  }
+}
+
+export default { signUpPatient ,signInPatient, signUpDoctor, signInDoctor};

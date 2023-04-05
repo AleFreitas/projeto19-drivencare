@@ -32,9 +32,21 @@ async function loginPatient(email, password) {
     const passwordOk = await bcrypt.compare(password, user.password);
     if (!passwordOk) throw errors.invalidCredentialsError();
 
-    const token = jwt.sign({ id: user.id }, process.env.SECRET, { expiresIn: 86400 });
+    const token = jwt.sign({ id: user.id, doctor:false }, process.env.SECRET, { expiresIn: 86400 });
     return token;
 }
 
-export default { registerPatient, registerDoctor, loginPatient };
+async function loginDoctor(email, password) {
+    const { rows: users } = await accessRepository.findDoctorByEmail(email);
+    if (users.length === 0) throw errors.invalidCredentialsError();
+    const [user] = users;
+
+    const passwordOk = await bcrypt.compare(password, user.password);
+    if (!passwordOk) throw errors.invalidCredentialsError();
+
+    const token = jwt.sign({ id: user.id, doctor:true }, process.env.SECRET, { expiresIn: 86400 });
+    return token;
+}
+
+export default { registerPatient, registerDoctor, loginPatient, loginDoctor};
 

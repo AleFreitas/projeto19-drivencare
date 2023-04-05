@@ -16,9 +16,9 @@ const signUpDoctorSchema = Joi.object({
   specialty: Joi.string().required()
 });
 
-const signInPatientSchema = Joi.object({
+const signInSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required()
 })
 
-export { signUpPatientSchema, signInPatientSchema , signUpDoctorSchema};
+export { signUpPatientSchema, signInSchema , signUpDoctorSchema};
