@@ -1,5 +1,7 @@
 import accessRepository from '../repositories/accessRepositories.js';
-import errors from '../errors/index.js'
+import addressRepository from '../repositories/addressRepositories.js';
+import specialtyRepository from '../repositories/specialtyRepositories.js';
+import errors from '../errors/index.js';
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
 
@@ -9,6 +11,18 @@ async function registerPatient(name, email, cpf, password) {
     const patient = await accessRepository.createPatient(name, email, cpf, password);
     return patient;
 }
+
+async function registerDoctor(name, email, crm, password,  city, specialty) {
+    const doctorExists = await accessRepository.findDoctor(email, crm)
+    const cityExists = await addressRepository.findCity(city)
+    const specialtyExists = await specialtyRepository.findSpecialty(specialty)
+    if (doctorExists.length !== 0) throw errors.conflictError("doctor already exists")
+    if (cityExists.length === 0) throw errors.notFoundAtQueryError(city,"city")
+    if (specialtyExists.length === 0) throw errors.notFoundAtQueryError(specialty, "specialties")
+    const doctor = await accessRepository.createDoctor(name, email, crm, password, cityExists[0].id, specialtyExists[0].id);
+    return doctor;
+}
+
 
 async function loginPatient(email, password) {
     const { rows: users } = await accessRepository.findPatientByEmail(email);
@@ -22,5 +36,5 @@ async function loginPatient(email, password) {
     return token;
 }
 
-export default { registerPatient, loginPatient };
+export default { registerPatient, registerDoctor, loginPatient };
 

@@ -27,6 +27,13 @@ function notFoundError() {
     };
 }
 
+function notFoundAtQueryError(data,column){
+    return {
+        name: "NotFoundAtQueryError",
+        message: `Couldn't find a ${column} named ${data}`,
+    };
+}
+
 function invalidCredentialsError() {
     return {
         name: "InvalidCredentialsError",
@@ -40,4 +47,5 @@ export default {
     unauthorizedError,
     notFoundError,
     invalidCredentialsError,
+    notFoundAtQueryError,
 };
