@@ -1,4 +1,5 @@
 import patientService from "../services/patientService.js";
+import errors from '../errors/index.js';
 
 async function getDoctorInfo(req, res, next) {
     try {
@@ -13,6 +14,7 @@ async function getDoctorInfo(req, res, next) {
         const doctor = await patientService.getDoctorsByCity(city);
         return res.status(200).json(doctor);
       }
+      return res.sendStatus(404)
     } catch (err) {
         console.log(err.message)
       return next(err);
